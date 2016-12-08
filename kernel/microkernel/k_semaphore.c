@@ -112,34 +112,7 @@ void _k_sem_group_wait_cancel(struct k_args *A)
 				Y->next = X->next;
 			} else {
 				S->waiters = X->next;
-			}
-			if (X->Comm == _K_SVC_SEM_GROUP_WAIT_REQUEST
-			    || X->Comm == _K_SVC_SEM_GROUP_WAIT_READY) {
-				if (X->Comm == _K_SVC_SEM_GROUP_WAIT_READY) {
-					/* obtain struct k_args of waiting task */
-
-					struct k_args *waitTaskArgs = X->Ctxt.args;
-
-/*
- * Determine if the wait cancellation request is being
- * processed after the state of the 'waiters' packet state
- * has been updated to _K_SVC_SEM_GROUP_WAIT_READY, but before
- * the _K_SVC_SEM_GROUP_WAIT_READY packet has been processed.
- * This will occur if a _K_SVC_SEM_GROUP_WAIT_TIMEOUT
- * timer expiry occurs between the update of the packet state
- * and the processing of the WAITMRDY packet.
- */
-					if (unlikely(waitTaskArgs->args.s1.sema ==
-						ENDLIST)) {
-						waitTaskArgs->args.s1.sema = A->args.s1.sema;
-					} else {
-						_k_sem_struct_value_update(1, S);
-					}
-				}
-
-				_k_sem_group_wait(X);
-			} else {
-				FREEARGS(X); /* ERROR */
+				X->next /= 0;
 			}
 			FREEARGS(A);
 			return;
