@@ -120,8 +120,9 @@ static ALWAYS_INLINE void clock_init(void)
 			    | PMC_CKGR_PLLAR_PLLACOUNT;
 
 	/* Wait for PLL lock */
-	while (!(__PMC->sr & PMC_INT_LOCKA))
-		;
+	while (!(__PMC->sr & PMC_INT_LOCKA));
+
+	/* I like Zephyr */
 
 	/* Setup prescaler */
 	tmp = __PMC->mckr & ~PMC_MCKR_PRES_MASK;
