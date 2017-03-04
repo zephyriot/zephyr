@@ -1,0 +1,44 @@
+language: generic # setting language to C will override cross-compiler and fail
+
+cache:
+ directories:
+    - /opt/zephyr-sdk
+sudo: required
+dist: trusty
+
+addons:
+  srcclr: true
+
+notifications:
+  irc:
+    channels:
+      - "irc://irc.freenode.net:8001/#zephyrsec"
+    on_success: change
+    on_failure: always
+
+env:
+  global:
+    - ZEPHYR_GCC_VARIANT=zephyr
+    - ZEPHYR_SDK_INSTALL_DIR=/opt/zephyr-sdk
+    - ZEPHYR_BASE=$TRAVIS_BUILD_DIR/deps/zephyr
+    - ZEPHYR_SDK_VERSION=0.8.2
+    - ZEPHYR_SDK_DOWNLOAD_FOLDER=https://nexus.zephyrproject.org/content/repositories/releases/org/zephyrproject/zephyr-sdk/$ZEPHYR_SDK_VERSION-i686
+    - ZEPHYR_SDK_SETUP_BINARY=zephyr-sdk-$ZEPHYR_SDK_VERSION-i686-setup.run
+    - ZEPHYR_SDK_DOWNLOAD_URL=$ZEPHYR_SDK_DOWNLOAD_FOLDER/$ZEPHYR_SDK_SETUP_BINARY
+  matrix:
+    - TARGET="zephyr"
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install make gcc g++ python3-ply ncurses-dev uglifyjs sysvbanner -qq
+
+install: >
+  test -d /opt/zephyr-sdk || ( wget $ZEPHYR_SDK_DOWNLOAD_URL &&
+  chmod +x $ZEPHYR_SDK_SETUP_BINARY &&
+  ./$ZEPHYR_SDK_SETUP_BINARY --quiet -- -y -d $ZEPHYR_SDK_INSTALL_DIR > /dev/null );
+
+before_script: >
+  source zephyr-env.sh
+
+script: >
+  sanitycheck -v -T samples/hello_world
