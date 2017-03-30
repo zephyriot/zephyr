@@ -1,0 +1,33 @@
+language: python
+python:
+- 2.7
+sudo: required
+dist: trusty
+env:
+  global:
+  - ZEPHYR_GCC_VARIANT=zephyr
+  - ZEPHYR_BASE=$TRAVIS_BUILD_DIR/deps/zephyr
+  - ZEPHYR_SDK_INSTALL_DIR=/opt/sdk
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install make doxygen
+install:
+- pip install breathe sphinx sphinx_rtd_theme
+before_script: 'source zephyr-env.sh
+
+'
+script: 'cd doc && make htmldocs
+
+'
+deploy:
+  provider: s3
+  access_key_id: AKIAICD55E7HYBJ3MJQQ
+  secret_access_key:
+    secure: TxkrMhNuM1A9F3mZBIo9CMrPQRooA/E40ZPGiDo9OCizoDbC0clQ55mB5fk4NbuXJxswbynFzVai85XC5GTb0gNgolw1SYgGwZWSJDT0EGmeT59QvbJWBDF4eK5siSi0uUVNkzX9/pt80Aub2cVK9bDhvOsbWE6alRTc0G63rwaYIntENTr/c51UVtSvrzyhe41rSKpSFjNxjtdpxrChmG3vCaU0idHjWmhqXvCDu05zrI0eyDoCj3CeIG9MDz2Prfs869eclXzhjA+NuagjqHTKsROxtfETe2BMN3q/7WOx1jmhVcajdjAcM32078IkzQoB9/13Kl76VElpSd3hEm/UaPQJsVm43QySdMxnIpucHTnoO0DMipj01i3V+ZpMWPI9xpQntNdfUX/cugnoF53Yd28/VG/2R48XBDmOmyZiuLEcRT201z2ZT0eTBhBV52zQ47OXk0uXiKE5WiP1shUfmiIYq1rVXr1RsGpJB3nEFbMctAl6EtdogwT7crylsH50lVTsjvgKgm5+DO7j/1PhGNXR7YZk/+9ZbydY+xNW1UCc0nHbPHrDqj3TRYJizRTv5lMI/wUPbTEdyiEyS/fcKhfmddyD7yapMk+UveNepw4A+4QMHskfx3/V4rPaQISMgq0HoGWBavwcYNDgOmXpknAhOyEPAhVvvAtI6fI=
+  bucket: zephyrdocs
+  acl: public_read
+  local_dir: $ZEPHYR_BASE/doc/_build/html
+  upload-dir: docs/dev
+  skip_cleanup: true
+  on:
+    repo: zephyriot/zephyr
