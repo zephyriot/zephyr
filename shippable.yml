@@ -1,0 +1,36 @@
+language: c
+
+compiler: gcc
+
+env:
+    global:
+        - SDK=0.9
+        - ZEPHYR_SDK_INSTALL_DIR=/opt/sdk/zephyr-sdk-0.9
+        - ZEPHYR_GCC_VARIANT=zephyr
+        - USE_CCACHE=1
+    matrix:
+        - ARCH=x86
+        - ARCH=arm
+        - ARCH=arc
+        - ARCH=riscv32
+        - ARCH=nios2
+
+build:
+    cache: true
+    cache_dir_list:
+        - ${SHIPPABLE_BUILD_DIR}/ccache
+    pre_ci_boot:
+        image_name: nashif/zephyr
+        image_tag: master.20
+        pull: true
+        options: "-e HOME=/root"
+
+    ci:
+      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
+      - echo ${CCACHE_DIR}
+      - ccache -s
+      - mkdir -p shippable/testresults
+      - source zephyr-env.sh
+      - ./scripts/sanitycheck -a ${ARCH} --inline-logs --all --enable-slow || ./scripts/sanitycheck --all --enable-slow -a ${ARCH} --inline-logs --only-failed --outdir=out-2nd-pass
+      - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+      - ccache -s
