@@ -1,0 +1,41 @@
+language: c
+
+compiler: gcc
+
+env:
+    global:
+        - SDK=0.9
+        - ZEPHYR_SDK_INSTALL_DIR=/opt/sdk/zephyr-sdk-0.9
+        - ZEPHYR_GCC_VARIANT=zephyr
+        - USE_CCACHE=1
+    matrix:
+        - ARCH=x86 COVERAGE="-T samples" BUILD_DOCS="1"
+        - ARCH=x86 COVERAGE="-T tests"
+        - ARCH=arm COVERAGE="-T samples"
+        - ARCH=arm COVERAGE="-T tests"
+        - ARCH=arc COVERAGE=""
+        - ARCH=riscv32 COVERAGE=""
+        - ARCH=nios2 COVERAGE=""
+
+build:
+    cache: true
+    cache_dir_list:
+        - ${SHIPPABLE_BUILD_DIR}/ccache
+    pre_ci_boot:
+        image_name: nashif/zephyr
+        image_tag: master.21
+        pull: true
+        options: "-e HOME=/root"
+
+    ci:
+      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
+      - echo ${CCACHE_DIR}
+      - ccache -s --max-size=500M
+      - mkdir -p shippable/testresults
+      - source zephyr-env.sh
+      - ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
+      - ccache -s
+    on_failure:
+      - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+    on_success:
+      - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
