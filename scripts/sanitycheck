@@ -1564,11 +1564,17 @@ class TestSuite:
 
         fails = 0
         passes = 0
+        errors = 0
+
         for name, goal in self.goals.items():
             if goal.failed:
-                fails +=1
+                if goal.reason in ['build_error', 'qemu_crash']:
+                    errors += 1
+                else:
+                    fails += 1
             else:
-                passes +=1
+                passes += 1
+
         run = "Sanitycheck"
         eleTestsuite = None
         append = args.only_failed
@@ -1580,7 +1586,7 @@ class TestSuite:
         else:
             eleTestsuites = ET.Element('testsuites')
             eleTestsuite = ET.SubElement(eleTestsuites, 'testsuite', name=run,
-                    tests="%d" %(passes + fails),  failures="%s" %fails, skip="0")
+                    tests="%d" %(errors + passes + fails),  failures="%d" %fails,  errors="%d" %errors, skip="0")
 
         for name, goal in self.goals.items():
 
@@ -1604,13 +1610,13 @@ class TestSuite:
                     rowdict["qemu_time"] = str(goal.metrics["qemu_time"])
             eleTestcase = ET.SubElement(eleTestsuite, 'testcase', name="%s:%s" %(rowdict['platform'], rowdict['test']), time=rowdict["qemu_time"])
             if goal.failed:
-                failure = ET.SubElement(eleTestcase, 'failure', type="failure", message="case failed")
+                failure = ET.SubElement(eleTestcase, 'failure', type="failure", message=goal.reason)
                 p = ("%s/%s/%s" %(args.outdir, rowdict['platform'], rowdict['test']))
                 bl = os.path.join(p, "build.log")
                 if os.path.exists(bl):
                     with open(bl, "r") as f:
                         log = f.read()
-                        failure.text = "![CDATA[" + (str(log)) + "]]"
+                        failure.text = (str(log))
 
         result = ET.tostring(eleTestsuites)
         f = open(filename, 'wb')
