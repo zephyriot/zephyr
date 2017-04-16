@@ -17,8 +17,6 @@ build:
         image_name: nashif/zephyr
         image_tag: master.21
         pull: true
-        options: "-e HOME=/root"
-
     ci:
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
