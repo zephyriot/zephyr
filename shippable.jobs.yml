@@ -1,6 +1,6 @@
 jobs:
     - name: zephyr_runDocs
-      type: runCI
+      type: runSh
       steps:
         - IN: zephyr-repo
         - TASK:
