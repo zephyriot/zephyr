@@ -23,7 +23,7 @@ build:
         - ${SHIPPABLE_BUILD_DIR}/ccache
     pre_ci_boot:
         image_name: nashif/zephyr
-        image_tag: master.20
+        image_tag: master.21
         pull: true
         options: "-e HOME=/root"
 
