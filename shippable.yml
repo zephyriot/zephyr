@@ -9,11 +9,11 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH=x86 COVERAGE="-T samples/basic"
-          #- ARCH=arm COVERAGE=
-          #- ARCH=arc COVERAGE=
-          #- ARCH=riscv32 COVERAGE=
-          #- ARCH=nios2 COVERAGE=
+        - ARCH=x86 COVERAGE=""
+        - ARCH=arm COVERAGE=""
+        - ARCH=arc COVERAGE=""
+        - ARCH=riscv32 COVERAGE=""
+        - ARCH=nios2 COVERAGE=""
 
 build:
     cache: true
@@ -28,11 +28,10 @@ build:
     ci:
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
-      - ccache -s
+      - ccache -s --max-size=500M
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
-        #- ./scripts/sanitycheck -a ${ARCH} --inline-logs --all --enable-slow || ./scripts/sanitycheck --all --enable-slow -a ${ARCH} --inline-logs --only-failed --outdir=out-2nd-pass
-      - ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass 
+      - ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
     on_failure:
       - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
