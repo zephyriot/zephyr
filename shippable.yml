@@ -9,8 +9,10 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH=x86 COVERAGE=""
-        - ARCH=arm COVERAGE=""
+        - ARCH=x86 COVERAGE="-T samples"
+        - ARCH=x86 COVERAGE="-T tests"
+        - ARCH=arm COVERAGE="-T samples"
+        - ARCH=arm COVERAGE="-T tests"
         - ARCH=arc COVERAGE=""
         - ARCH=riscv32 COVERAGE=""
         - ARCH=nios2 COVERAGE=""
