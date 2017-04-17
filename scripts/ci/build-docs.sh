@@ -1,5 +1,6 @@
 #!/bin/bash
 
+exit 0
 sudo apt-get install doxygen make
 sudo pip install breathe sphinx
 

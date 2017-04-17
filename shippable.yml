@@ -9,7 +9,7 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH=x86 COVERAGE="-T samples"
+        - ARCH=x86 COVERAGE="-T samples" BUILD_DOCS="1"
         - ARCH=x86 COVERAGE="-T tests"
         - ARCH=arm COVERAGE="-T samples"
         - ARCH=arm COVERAGE="-T tests"
@@ -29,6 +29,7 @@ build:
 
     ci:
       - env
+      - if [ -n "$BUILD_DOCS" ]; then exit 1; fi
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=500M
@@ -37,6 +38,6 @@ build:
       - ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
     on_failure:
-      - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+      - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
     on_success:
       - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
