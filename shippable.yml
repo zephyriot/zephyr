@@ -30,10 +30,11 @@ build:
     ci:
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
+      - if [ -e "$ZEPHYR_RUN_DAILY_STATE" ]; then export PLATFORMS="--all"; fi
       - ccache -s --max-size=500M
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
-      - ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
+      - ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
     on_failure:
       - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
