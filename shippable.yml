@@ -28,6 +28,7 @@ build:
         options: "-e HOME=/root"
 
     ci:
+      - env
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=500M

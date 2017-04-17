@@ -1,7 +1,0 @@
-jobs:
-    - name: zephyr_runDocs
-      type: runSh
-      steps:
-        - IN: zephyr-repo
-        - TASK:
-           - script: ./scripts/ci/build-docs..sh
