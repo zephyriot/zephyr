@@ -29,9 +29,13 @@ build:
         options: "-e HOME=/root"
 
     ci:
+      - env
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
-      - if [ -e "${ZEPHYR_RUN_DAILY_STATE}/job.env" ]; then echo "Running all"; source ${ZEPHYR_RUN_DAILY_STATE}/job.env; fi
+      - if [ -e "${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env" ]; then echo "Running all"; cat ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; source ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; fi
+      - echo "BUILD_ID=${BUILD_ID}"
+      - echo "BUILD_NUMBER=${BUILD_NUMBER}"
+      - echo "SHIPPABLE_JOB_ID=${SHIPPABLE_JOB_ID}"
       - ccache -s --max-size=500M
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
