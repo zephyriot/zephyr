@@ -9,10 +9,11 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH=x86 COVERAGE="-T samples" BUILD_DOCS="1"
-        - ARCH=x86 COVERAGE="-T tests"
-        - ARCH=arm COVERAGE="-T samples"
-        - ARCH=arm COVERAGE="-T tests"
+        - ARCH=x86 COVERAGE="-T samples -T tests/crypto"
+        - ARCH=x86 COVERAGE="-T tests -e crypto"
+        - ARCH=arm COVERAGE="-T samples -T tests/crypto"
+        - ARCH=arm COVERAGE="-T tests -e kernel -e core"
+        - ARCH=arm COVERAGE="-T tests/kernel"
         - ARCH=arc COVERAGE=""
         - ARCH=riscv32 COVERAGE=""
         - ARCH=nios2 COVERAGE=""
