@@ -32,10 +32,7 @@ build:
       - env
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
-      - if [ -e "${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env" ]; then echo "Running all"; cat ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; source ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; fi
-      - echo "BUILD_ID=${BUILD_ID}"
-      - echo "BUILD_NUMBER=${BUILD_NUMBER}"
-      - echo "SHIPPABLE_JOB_ID=${SHIPPABLE_JOB_ID}"
+      - if [ -e "${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env" -a ! -e "${ZEPHYR_RUN_DAILY_STATE}/DONE/${ZEPHYR_RUN_DAILY_ID}" ]; then echo "Running all"; cat ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; source ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; mkdir -p "${ZEPHYR_RUN_DAILY_STATE}/DONE"; touch "${ZEPHYR_RUN_DAILY_STATE}/DONE/${ZEPHYR_RUN_DAILY_ID}"; fi
       - ccache -s --max-size=500M
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
@@ -43,5 +40,7 @@ build:
       - ccache -s
     on_failure:
       - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+      - git clean -dxf
     on_success:
       - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+      - git clean -dxf
