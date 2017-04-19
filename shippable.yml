@@ -33,13 +33,13 @@ build:
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=500M
-      - mkdir -p shippable/testresults
       - source zephyr-env.sh
       - ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
+    post_ci:
+      - git clean -dxf -e last_sanity.xml
+      - mkdir -p shippable/testresults
     on_failure:
       - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
-      - git clean -dxf
     on_success:
       - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
-      - git clean -dxf
