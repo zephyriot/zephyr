@@ -32,7 +32,6 @@ build:
       - env
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
       - echo ${CCACHE_DIR}
-      - if [ -e "${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env" -a ! -e "${ZEPHYR_RUN_DAILY_STATE}/DONE/${ZEPHYR_RUN_DAILY_ID}" ]; then echo "Running all"; cat ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; source ${ZEPHYR_RUN_DAILY_STATE}/${ZEPHYR_RUN_DAILY_ID}/job.env; mkdir -p "${ZEPHYR_RUN_DAILY_STATE}/DONE"; touch "${ZEPHYR_RUN_DAILY_STATE}/DONE/${ZEPHYR_RUN_DAILY_ID}"; fi
       - ccache -s --max-size=500M
       - mkdir -p shippable/testresults
       - source zephyr-env.sh
