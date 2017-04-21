@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+
+echo "- Checkpatch"
 cd ${ZEPHYRREPO_STATE}
 source zephyr-env.sh
 git diff ${ZEPHYR_CIREPO_VERSIONNAME} | ${ZEPHYR_BASE}/scripts/checkpatch.pl --mailback --no-tree
