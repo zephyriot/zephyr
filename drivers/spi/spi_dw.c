@@ -276,8 +276,7 @@ static int spi_dw_configure(struct device *dev,
 	return 0;
 }
 
-static int spi_dw_slave_select(struct device *dev, u32_t slave)
-{
+static int spi_dw_slave_select(struct device *dev, u32_t slave) {
 	struct spi_dw_data *spi = dev->driver_data;
 
 	SYS_LOG_DBG("%s: %p %d", __func__, dev, slave);
