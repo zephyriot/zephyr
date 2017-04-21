@@ -7,8 +7,6 @@
 #ifndef __Z_TYPES_H__
 #define __Z_TYPES_H__
 
-#include <stdint.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
