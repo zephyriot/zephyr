@@ -27,9 +27,8 @@ build:
       - env
       - git --version
       - gitlint --version
-      - git show
-      - git branch
-      - gitlint --debug -vvv --commits adaeba2
+      - git rebase origin/master
+      - gitlint --commits ${SHIPPABLE_COMMIT_RANGE}
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
