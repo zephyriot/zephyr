@@ -34,7 +34,7 @@ build:
       - ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
     post_ci:
-      - git clean -dxf -e last_sanity.xml
+      - rm -rf sanity-out out-2nd-pass
       - mkdir -p shippable/testresults
     on_failure:
       - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
