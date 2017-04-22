@@ -27,6 +27,8 @@ build:
       - env
       - git --version
       - gitlint --version
+      - git show
+      - git branch
       - gitlint
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
