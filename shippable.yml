@@ -29,7 +29,7 @@ build:
       - gitlint --version
       - git show
       - git branch
-      - gitlint
+      - gitlint --debug -vvv --commits adaeba2
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
