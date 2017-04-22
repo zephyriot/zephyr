@@ -9,9 +9,9 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH="-a x86"
-        - ARCH="-a arm"
-        - ARCH="-a arc -a riscv32 -a nios2"
+        - ARCH=""
+          #- ARCH="-a arm"
+          #- ARCH="-a arc -a riscv32 -a nios2"
 
 build:
     cache: true
