@@ -9,11 +9,9 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH=x86 COVERAGE=""
-        - ARCH=arm COVERAGE=""
-        - ARCH=arc COVERAGE=""
-        - ARCH=riscv32 COVERAGE=""
-        - ARCH=nios2 COVERAGE=""
+        - ARCH="-a x86" CCACHE_D="a"
+        - ARCH="-a arm" CCACHE_D="b"
+        - ARCH="-a arc -a riscv32 -a nios2" CCACHE_D="c"
 
 build:
     cache: true
@@ -27,7 +25,7 @@ build:
 
     ci:
       - env
-      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${ARCH}/.ccache
+      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${CCACHE_D}/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=500M
       - source zephyr-env.sh
@@ -38,7 +36,7 @@ build:
       - cp samples/hello_world/outdir/qemu_x86/scripts/basic/fixdep bin/
       - cp samples/hello_world/outdir/qemu_x86/scripts/gen_idt/gen_idt bin/
       - export PREBUILT_HOST_TOOLS=${ZEPHYR_BASE}/bin
-      - ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} -a ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
+      - ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
     post_ci:
       - git clean -dxf -e last_sanity.xml
