@@ -28,7 +28,7 @@ build:
       - git --version
       - gitlint --version
       - echo ${SHIPPABLE_COMMIT_RANGE}
-      - if [ -n "$SHIPPABLE_COMMIT_RANGE" ]; then git log ${SHIPPABLE_COMMIT_RANGE}; gitlint --commits ${SHIPPABLE_COMMIT_RANGE}; fi
+      - gitlint --commits origin..HEAD
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
