@@ -76,7 +76,7 @@ static int spi_qmsi_configure(struct device *dev,
 				struct spi_config *config)
 {
 	struct spi_qmsi_runtime *context = dev->driver_data;
-	qm_spi_config_t *cfg = &context->cfg;
+								qm_spi_config_t *cfg = &context->cfg;
 
 	cfg->frame_size = SPI_WORD_SIZE_GET(config->config) - 1;
 	cfg->bus_mode = config_to_bmode(SPI_MODE(config->config));
