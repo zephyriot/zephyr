@@ -25,6 +25,9 @@ build:
 
     ci:
       - env
+      - git --version
+      - gitlint --version
+      - echo ${SHIPPABLE_COMMIT_RANGE}
       - if [ -n "$SHIPPABLE_COMMIT_RANGE" ]; then git log ${SHIPPABLE_COMMIT_RANGE}; gitlint --commits ${SHIPPABLE_COMMIT_RANGE}; fi
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
