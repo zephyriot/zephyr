@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-
+sudo pip install pygithub
 echo "- Checkpatch"
 cd ${ZEPHYRREPO_STATE}
 source zephyr-env.sh
