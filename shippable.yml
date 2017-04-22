@@ -9,9 +9,9 @@ env:
         - ZEPHYR_GCC_VARIANT=zephyr
         - USE_CCACHE=1
     matrix:
-        - ARCH="-a x86" CCACHE_D="a"
-        - ARCH="-a arm" CCACHE_D="b"
-        - ARCH="-a arc -a riscv32 -a nios2" CCACHE_D="c"
+        - ARCH="-a x86"
+        - ARCH="-a arm"
+        - ARCH="-a arc -a riscv32 -a nios2"
 
 build:
     cache: true
@@ -25,9 +25,9 @@ build:
 
     ci:
       - env
-      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/${CCACHE_D}/.ccache
+      - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
-      - ccache -s --max-size=500M
+      - ccache -s --max-size=2000M
       - source zephyr-env.sh
       - make -C samples/hello_world
       - mkdir -p bin
