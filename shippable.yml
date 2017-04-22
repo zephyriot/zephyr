@@ -29,12 +29,7 @@ build:
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
       - source zephyr-env.sh
-      - make -C samples/hello_world
-      - mkdir -p bin
-      - cp samples/hello_world/outdir/qemu_x86/scripts/kconfig/conf bin
-      - cp samples/hello_world/outdir/qemu_x86/scripts/gen_offset_header/gen_offset_header bin/
-      - cp samples/hello_world/outdir/qemu_x86/scripts/basic/fixdep bin/
-      - cp samples/hello_world/outdir/qemu_x86/scripts/gen_idt/gen_idt bin/
+      - make host-tools
       - export PREBUILT_HOST_TOOLS=${ZEPHYR_BASE}/bin
       - ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
       - ccache -s
