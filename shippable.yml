@@ -27,8 +27,7 @@ build:
       - env
       - git --version
       - gitlint --version
-      - echo ${SHIPPABLE_COMMIT_RANGE}
-      - gitlint --commits origin..HEAD
+      - gitlint
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
