@@ -19,7 +19,7 @@ build:
         - ${SHIPPABLE_BUILD_DIR}/ccache
     pre_ci_boot:
         image_name: nashif/zephyr
-        image_tag: master.24
+        image_tag: master.25
         pull: true
         options: "-e HOME=/root --privileged=true --tty --net=bridge"
 
@@ -28,6 +28,7 @@ build:
       - source zephyr-env.sh
       - export COMMIT_RANGE=${SHIPPABLE_COMMIT_RANGE}
       - ./scripts/ci/compliance.py
+      - cat compliance.xml
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M

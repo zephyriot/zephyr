@@ -1579,7 +1579,7 @@ class TestSuite:
         eleTestsuite = None
         append = args.only_failed
 
-        if os.path.exists(filename) and append:
+        if os.path.exists(filename) or append:
             tree = ET.parse(filename)
             eleTestsuites = tree.getroot()
             eleTestsuite =  tree.findall('testsuite')[0];
@@ -1991,6 +1991,7 @@ def main():
 
     if args.testcase_report:
         ts.testcase_report(args.testcase_report)
+        ts.testcase_xunit_report(args.testcase_report, args)
     if not args.no_update:
         ts.testcase_xunit_report(LAST_SANITY_XUNIT, args)
         ts.testcase_report(LAST_SANITY)
