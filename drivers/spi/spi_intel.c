@@ -190,6 +190,9 @@ static void push_data(struct device *dev)
 static int spi_intel_configure(struct device *dev,
 				struct spi_config *config)
 {
+
+
+	/* dummy change */
 	struct spi_intel_data *spi = dev->driver_data;
 	u32_t flags = config->config;
 	u32_t mode;
