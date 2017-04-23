@@ -9,5 +9,6 @@
 
 void main(void)
 {
+	xx
 	printk("Hello World! %s\n", CONFIG_ARCH);
 }
