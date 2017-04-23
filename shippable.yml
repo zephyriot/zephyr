@@ -19,13 +19,13 @@ build:
         - ${SHIPPABLE_BUILD_DIR}/ccache
     pre_ci_boot:
         image_name: nashif/zephyr
-        image_tag: master.23
+        image_tag: master.22
         pull: true
-        options: "-e HOME=/root"
+        options: "-e HOME=/root --privileged=true --tty --net=bridge"
 
     ci:
       - env
-      - gitlint --commits ${SHIPPABLE_COMMIT_RANGE} > gitlint.out
+      - gitlint --commits ${SHIPPABLE_COMMIT_RANGE}
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
