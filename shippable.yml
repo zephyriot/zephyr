@@ -25,11 +25,12 @@ build:
 
     ci:
       - env
-      - gitlint --commits ${SHIPPABLE_COMMIT_RANGE}
+      - source zephyr-env.sh
+      - export COMMIT_RANGE=${SHIPPABLE_COMMIT_RANGE}
+      - ./scripts/ci/compliance.py
       - export CCACHE_DIR=${SHIPPABLE_BUILD_DIR}/ccache/.ccache
       - echo ${CCACHE_DIR}
       - ccache -s --max-size=2000M
-      - source zephyr-env.sh
       - make host-tools
       - export PREBUILT_HOST_TOOLS=${ZEPHYR_BASE}/bin
       - ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs || ./scripts/sanitycheck ${PLATFORMS} ${ARCH} ${COVERAGE} --inline-logs --only-failed --outdir=out-2nd-pass
@@ -39,5 +40,6 @@ build:
       - mkdir -p shippable/testresults
     on_failure:
       - test -f ./scripts/sanity_chk/last_sanity.xml && cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
+      - test -f compliance.xml && cp compliance.xml shippable/testresults/
     on_success:
       - cp ./scripts/sanity_chk/last_sanity.xml shippable/testresults/
