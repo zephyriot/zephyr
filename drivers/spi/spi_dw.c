@@ -164,8 +164,7 @@ static void push_data(struct device *dev)
 	SYS_LOG_DBG("Pushed: %d", DBG_COUNTER_RESULT());
 }
 
-static void pull_data(struct device *dev)
-{
+static void pull_data(struct device *dev) {
 	const struct spi_dw_config *info = dev->config->config_info;
 	struct spi_dw_data *spi = dev->driver_data;
 	u32_t data = 0;
