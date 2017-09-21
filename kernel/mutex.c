@@ -26,6 +26,7 @@
  * unexpected priority levels (too high, or too low).
  */
 
+// new comment
 #include <kernel.h>
 #include <kernel_structs.h>
 #include <toolchain.h>
