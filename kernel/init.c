@@ -28,6 +28,9 @@
 #include <string.h>
 #include <misc/dlist.h>
 
+
+// A stray comment
+
 /* kernel build timestamp items */
 
 #define BUILD_TIMESTAMP "BUILD: " __DATE__ " " __TIME__
@@ -146,8 +149,7 @@ void k_call_stacks_analyze(void) { }
  *
  * @return N/A
  */
-void _bss_zero(void)
-{
+void _bss_zero(void) {
 	memset(&__bss_start, 0,
 		 ((u32_t) &__bss_end - (u32_t) &__bss_start));
 #ifdef CONFIG_APPLICATION_MEMORY
@@ -156,7 +158,7 @@ void _bss_zero(void)
 #endif
 }
 
-
+      
 #ifdef CONFIG_XIP
 /**
  *
